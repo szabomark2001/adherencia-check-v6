@@ -10,24 +10,14 @@
 <body class="admin">
 <header class="site-header">
   <div class="brand"><span class="brand__logo">AC</span><span class="brand__name">Adherencia<span>Check</span> • Admin</span></div>
-  <div class="header-actions">
-    <button id="logoutBtn" class="theme-toggle">Kilépés</button>
-  </div>
 </header>
-
 <main class="container">
   <section class="card">
     <h1>Bejelentkezés</h1>
-    <p class="muted">Adja meg az admin tokent (Netlify környezeti változó: <code>ADMIN_TOKEN</code>).</p>
-    <div class="with-icon">
-      <span class="icon">🔐</span>
-      <input id="adminToken" placeholder="Admin token" />
-    </div>
-    <div class="actions">
-      <button id="loginBtn" class="btn">Belépés</button>
-    </div>
+    <p class="muted">Adja meg az admin tokent (Netlify: <code>ADMIN_TOKEN</code>).</p>
+    <div class="with-icon"><span class="icon">🔐</span><input id="adminToken" placeholder="Admin token" /></div>
+    <div class="actions"><button id="loginBtn" class="btn">Belépés</button></div>
   </section>
-
   <section id="dash" class="card hidden">
     <h2>Összesített adatok</h2>
     <div class="stats">
@@ -44,21 +34,16 @@
       <button id="exportSheetBtn" class="btn btn--ghost">Export CSV (felhő)</button>
     </div>
   </section>
-
   <section id="tableSec" class="card hidden">
     <h2>Beküldések</h2>
     <div class="table-wrap">
-      <table id="dataTable">
-        <thead><tr>
-          <th>TAJ</th><th>q1</th><th>q2</th><th>q3</th><th>q4</th><th>q5</th><th>q6</th><th>q7</th><th>q8</th><th>missed14</th><th>dátum</th>
-        </tr></thead>
-        <tbody></tbody>
-      </table>
+      <table id="dataTable"><thead><tr>
+        <th>TAJ</th><th>q1</th><th>q2</th><th>q3</th><th>q4</th><th>q5</th><th>q6</th><th>q7</th><th>q8</th><th>missed14</th><th>dátum</th>
+      </tr></thead><tbody></tbody></table>
     </div>
   </section>
 </main>
-
-<script>window.SHEET_ID='1YUQJJodASSjYdeMnwNYNtukQDxTElfIWmxLXJZBmS54';</script>
+<script>window.SHEET_ID="1YUQJJodASSjYdeMnwNYNtukQDxTElfIWmxLXJZBmS54";</script>
 <script src="admin.js"></script>
 </body>
 </html>

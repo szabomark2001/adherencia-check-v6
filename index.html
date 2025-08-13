@@ -16,9 +16,9 @@
       <h1 id="consentTitle" data-i18n="consent.title">Beleegyezés</h1>
       <p data-i18n="consent.text">Az oldal az Ön gyógyszeres adherenciáját méri <strong>tájékoztató jelleggel</strong>. A kitöltés önkéntes, és nem helyettesíti az orvosi vizsgálatot. Panasz esetén forduljon kezelőorvosához.</p>
       <label class="consent-check">
-        <input type="checkbox" id="consentCheck"> <span data-i18n="consent.accept">Elolvastam és elfogadom a feltételeket.</span>
+        <input type="checkbox" id="consentCheck" aria-describedby="consentTitle"> <span data-i18n="consent.accept">Elolvastam és elfogadom a feltételeket.</span>
       </label>
-      <button id="consentBtn" class="btn" disabled data-i18n="consent.btn">Elfogadom</button>
+      <button id="consentBtn" class="btn" disabled aria-disabled="true" data-i18n="consent.btn">Elfogadom</button>
     </div>
   </div>
 
@@ -28,7 +28,6 @@
       <span class="brand__name">Adherencia<span>Check</span></span>
     </div>
     <div class="header-actions">
-      <button id="langToggle" class="theme-toggle" aria-label="Nyelv váltása">HU/EN</button>
       <button id="themeToggle" aria-label="Téma váltása" class="theme-toggle">🌓</button>
     </div>
   </header>
@@ -42,7 +41,6 @@
     <section id="formSection" class="card fade-in-up">
       <h2 data-i18n="form.title">Kérdőív</h2>
       <form id="surveyForm" novalidate>
-        <!-- TAJ (9 számjegy) -->
         <div class="q">
           <label for="taj" data-i18n="form.taj.label">Kérem, adja meg a TAJ számát (9 számjegy):</label>
           <div class="with-icon">
@@ -52,109 +50,90 @@
           <p class="muted" data-i18n="form.taj.note">Ne adjon meg más személyes adatot (név, e‑mail).</p>
         </div>
 
-        <!-- 8 kérdés (0–3 pont; magasabb = jobb adherencia) -->
-        <div class="q reveal">
-          <label data-i18n="q1.l">1) Az elmúlt 2 hétben hányszor felejtette el bevenni a gyógyszerét?</label>
+        <!-- 8 kérdés -->
+        <div class="q reveal"><label data-i18n="q1.l">1) Az elmúlt 2 hétben hányszor felejtette el bevenni a gyógyszerét?</label>
           <div class="opts">
-            <label><input type="radio" name="q1" value="3" required> <span data-i18n="opt.never">Soha</span></label>
-            <label><input type="radio" name="q1" value="2"> <span data-i18n="opt.sometimes12">1–2 alkalom</span></label>
-            <label><input type="radio" name="q1" value="1"> <span data-i18n="opt.sometimes34">3–4 alkalom</span></label>
-            <label><input type="radio" name="q1" value="0"> <span data-i18n="opt.often5">≥5 alkalom</span></label>
+            <label><input type="radio" name="q1" value="3" required> Soha</label>
+            <label><input type="radio" name="q1" value="2"> 1–2 alkalom</label>
+            <label><input type="radio" name="q1" value="1"> 3–4 alkalom</label>
+            <label><input type="radio" name="q1" value="0"> ≥5 alkalom</label>
           </div>
           <div class="followup hidden" data-follow="q1">
-            <label data-i18n="follow.q1">Mi okozza leginkább az elfelejtést?</label>
-            <select id="f1">
-              <option value="" data-i18n="opt.choose">Válasszon…</option>
-              <option value="napirend" data-i18n="opt.routine">Változó napirend</option>
-              <option value="emlekezteto" data-i18n="opt.reminder">Nincs emlékeztető</option>
-              <option value="egyeb" data-i18n="opt.other">Egyéb</option>
-            </select>
+            <label>Mi okozza leginkább az elfelejtést?</label>
+            <select id="f1"><option value="">Válasszon…</option><option value="napirend">Változó napirend</option><option value="emlekezteto">Nincs emlékeztető</option><option value="egyeb">Egyéb</option></select>
           </div>
         </div>
 
-        <div class="q reveal">
-          <label data-i18n="q2.l">2) Milyen gyakran csúszik a bevétel ≥2 órát a szokásos időponthoz képest?</label>
+        <div class="q reveal"><label>2) Milyen gyakran csúszik a bevétel ≥2 órát?</label>
           <div class="opts">
-            <label><input type="radio" name="q2" value="3" required> <span data-i18n="opt.rare">Soha/ritkán</span></label>
-            <label><input type="radio" name="q2" value="2"> <span data-i18n="opt.monthly">Havonta néhányszor</span></label>
-            <label><input type="radio" name="q2" value="1"> <span data-i18n="opt.weekly">Hetente</span></label>
-            <label><input type="radio" name="q2" value="0"> <span data-i18n="opt.twiceweek">Többször hetente</span></label>
+            <label><input type="radio" name="q2" value="3" required> Soha/ritkán</label>
+            <label><input type="radio" name="q2" value="2"> Havonta néhányszor</label>
+            <label><input type="radio" name="q2" value="1"> Hetente</label>
+            <label><input type="radio" name="q2" value="0"> Többször hetente</label>
           </div>
         </div>
 
-        <div class="q reveal">
-          <label data-i18n="q3.l">3) Előfordul, hogy szándékosan kihagyja mellékhatás vagy kétely miatt?</label>
+        <div class="q reveal"><label>3) Előfordul, hogy szándékosan kihagyja?</label>
           <div class="opts">
-            <label><input type="radio" name="q3" value="3" required> <span data-i18n="opt.no">Nem</span></label>
-            <label><input type="radio" name="q3" value="2"> <span data-i18n="opt.rare">Ritkán</span></label>
-            <label><input type="radio" name="q3" value="1"> <span data-i18n="opt.sometimes">Néha</span></label>
-            <label><input type="radio" name="q3" value="0"> <span data-i18n="opt.often">Gyakran</span></label>
+            <label><input type="radio" name="q3" value="3" required> Nem</label>
+            <label><input type="radio" name="q3" value="2"> Ritkán</label>
+            <label><input type="radio" name="q3" value="1"> Néha</label>
+            <label><input type="radio" name="q3" value="0"> Gyakran</label>
           </div>
           <div class="followup hidden" data-follow="q3">
-            <label data-i18n="follow.q3">Miért hagyja ki leggyakrabban?</label>
-            <select id="f3">
-              <option value="" data-i18n="opt.choose">Válasszon…</option>
-              <option value="mellekhatas" data-i18n="opt.side">Mellékhatás</option>
-              <option value="ketely" data-i18n="opt.doubt">Kétely a hatásban</option>
-              <option value="koltseg" data-i18n="opt.cost">Költség</option>
-              <option value="egyeb" data-i18n="opt.other">Egyéb</option>
-            </select>
+            <label>Miért hagyja ki leggyakrabban?</label>
+            <select id="f3"><option value="">Válasszon…</option><option value="mellekhatas">Mellékhatás</option><option value="ketely">Kétely</option><option value="koltseg">Költség</option><option value="egyeb">Egyéb</option></select>
           </div>
         </div>
 
-        <div class="q reveal">
-          <label data-i18n="q4.l">4) Mennyire világos az adagolás, időpont és teendők kihagyás esetén?</label>
+        <div class="q reveal"><label>4) Mennyire világos az adagolás, és mi a teendő kihagyás esetén?</label>
           <div class="opts">
-            <label><input type="radio" name="q4" value="3" required> <span data-i18n="opt.clear">Teljesen világos</span></label>
-            <label><input type="radio" name="q4" value="2"> <span data-i18n="opt.mostly">Többnyire világos</span></label>
-            <label><input type="radio" name="q4" value="1"> <span data-i18n="opt.partial">Részben zavaros</span></label>
-            <label><input type="radio" name="q4" value="0"> <span data-i18n="opt.unclear">Nem világos</span></label>
+            <label><input type="radio" name="q4" value="3" required> Teljesen világos</label>
+            <label><input type="radio" name="q4" value="2"> Többnyire világos</label>
+            <label><input type="radio" name="q4" value="1"> Részben zavaros</label>
+            <label><input type="radio" name="q4" value="0"> Nem világos</label>
           </div>
         </div>
 
-        <div class="q reveal">
-          <label data-i18n="q5.l">5) Van segítsége emlékeztetőkkel (app, doboz, hozzátartozó)?</label>
+        <div class="q reveal"><label>5) Van segítsége emlékeztetőkkel?</label>
           <div class="opts">
-            <label><input type="radio" name="q5" value="3" required> <span data-i18n="opt.regular">Igen, rendszeresen</span></label>
-            <label><input type="radio" name="q5" value="2"> <span data-i18n="opt.sometimes">Igen, néha</span></label>
-            <label><input type="radio" name="q5" value="1"> <span data-i18n="opt.rare">Ritkán</span></label>
-            <label><input type="radio" name="q5" value="0"> <span data-i18n="opt.none">Nincs</span></label>
+            <label><input type="radio" name="q5" value="3" required> Igen, rendszeresen</label>
+            <label><input type="radio" name="q5" value="2"> Igen, néha</label>
+            <label><input type="radio" name="q5" value="1"> Ritkán</label>
+            <label><input type="radio" name="q5" value="0"> Nincs</label>
           </div>
         </div>
 
-        <div class="q reveal">
-          <label data-i18n="q6.l">6) Meg tudja vásárolni a gyógyszereket anyagilag?</label>
+        <div class="q reveal"><label>6) Meg tudja vásárolni a gyógyszereket?</label>
           <div class="opts">
-            <label><input type="radio" name="q6" value="3" required> <span data-i18n="opt.yes">Igen</span></label>
-            <label><input type="radio" name="q6" value="2"> <span data-i18n="opt.hardSometimes">Néha nehéz</span></label>
-            <label><input type="radio" name="q6" value="1"> <span data-i18n="opt.hardOften">Gyakran nehéz</span></label>
-            <label><input type="radio" name="q6" value="0"> <span data-i18n="opt.no">Nem</span></label>
+            <label><input type="radio" name="q6" value="3" required> Igen</label>
+            <label><input type="radio" name="q6" value="2"> Néha nehéz</label>
+            <label><input type="radio" name="q6" value="1"> Gyakran nehéz</label>
+            <label><input type="radio" name="q6" value="0"> Nem</label>
           </div>
         </div>
 
-        <div class="q reveal">
-          <label data-i18n="q7.l">7) Zavaró mellékhatásai vannak jelenleg?</label>
+        <div class="q reveal"><label>7) Zavaró mellékhatásai vannak?</label>
           <div class="opts">
-            <label><input type="radio" name="q7" value="3" required> <span data-i18n="opt.none">Nincsenek</span></label>
-            <label><input type="radio" name="q7" value="2"> <span data-i18n="opt.mild">Enyhe</span></label>
-            <label><input type="radio" name="q7" value="1"> <span data-i18n="opt.moderate">Közepes</span></label>
-            <label><input type="radio" name="q7" value="0"> <span data-i18n="opt.severe">Súlyos</span></label>
+            <label><input type="radio" name="q7" value="3" required> Nincsenek</label>
+            <label><input type="radio" name="q7" value="2"> Enyhe</label>
+            <label><input type="radio" name="q7" value="1"> Közepes</label>
+            <label><input type="radio" name="q7" value="0"> Súlyos</label>
           </div>
         </div>
 
-        <div class="q reveal">
-          <label data-i18n="q8.l">8) Mennyire tartja fontosnak a gyógyszerek rendszeres szedését?</label>
+        <div class="q reveal"><label>8) Mennyire tartja fontosnak a rendszeres szedést?</label>
           <div class="opts">
-            <label><input type="radio" name="q8" value="3" required> <span data-i18n="opt.very">Nagyon fontos</span></label>
-            <label><input type="radio" name="q8" value="2"> <span data-i18n="opt.important">Fontos</span></label>
-            <label><input type="radio" name="q8" value="1"> <span data-i18n="opt.less">Kevésbé fontos</span></label>
-            <label><input type="radio" name="q8" value="0"> <span data-i18n="opt.not">Nem fontos</span></label>
+            <label><input type="radio" name="q8" value="3" required> Nagyon fontos</label>
+            <label><input type="radio" name="q8" value="2"> Fontos</label>
+            <label><input type="radio" name="q8" value="1"> Kevésbé fontos</label>
+            <label><input type="radio" name="q8" value="0"> Nem fontos</label>
           </div>
         </div>
 
         <!-- Csúszka (0–14) -->
         <div class="q reveal">
-          <label for="missed" data-i18n="q9.l">Az elmúlt 2 hétben hányszor fordult elő, hogy nem vette be a gyógyszerét?</label>
+          <label for="missed">Az elmúlt 2 hétben hányszor fordult elő, hogy nem vette be a gyógyszerét?</label>
           <div class="range-wrap">
             <input type="range" id="missed" name="missed" min="0" max="14" value="0" />
             <output id="missedVal">0</output>
@@ -162,8 +141,8 @@
         </div>
 
         <div class="actions">
-          <button type="submit" class="btn" data-i18n="form.submit">Eredmény kiszámítása</button>
-          <button type="button" id="resetBtn" class="btn btn--ghost" data-i18n="form.reset">Űrlap törlése</button>
+          <button type="submit" class="btn">Eredmény kiszámítása</button>
+          <button type="button" id="resetBtn" class="btn btn--ghost">Űrlap törlése</button>
         </div>
       </form>
 
@@ -173,25 +152,23 @@
     </section>
 
     <section id="resultSection" class="card hidden fade-in" aria-live="polite">
-      <h2 data-i18n="result.title">Eredmény</h2>
+      <h2>Eredmény</h2>
       <p><strong>TAJ:</strong> <span id="shownId">–</span></p>
-      <p><strong data-i18n="result.score">Összpontszám:</strong> <span id="score">–</span> / 24 &nbsp;•&nbsp;
-         <strong data-i18n="result.cat">Kategória:</strong> <span id="category">–</span> &nbsp;•&nbsp;
-         <strong data-i18n="result.missed">Kihagyások (14 nap):</strong> <span id="missedOut">0</span>
+      <p><strong>Összpontszám:</strong> <span id="score">–</span> / 24 &nbsp;•&nbsp;
+         <strong>Kategória:</strong> <span id="category">–</span> &nbsp;•&nbsp;
+         <strong>Kihagyások (14 nap):</strong> <span id="missedOut">0</span>
       </p>
 
       <div id="gamify" class="badge-zone"></div>
 
       <div class="results-grid">
-        <div class="chart-wrap">
-          <canvas id="radarChart"></canvas>
-        </div>
+        <div class="chart-wrap"><canvas id="radarChart"></canvas></div>
         <div id="advice" class="advice"></div>
       </div>
 
       <div class="actions">
-        <button id="printBtn" class="btn" data-i18n="result.print">Nyomtatás / PDF</button>
-        <button id="exportAllBtn" class="btn btn--ghost" data-i18n="result.export">Összes eredmény export (CSV)</button>
+        <button id="printBtn" class="btn">Nyomtatás / PDF</button>
+        <button id="exportAllBtn" class="btn btn--ghost">Összes eredmény export (CSV)</button>
       </div>
     </section>
   </main>
@@ -200,7 +177,7 @@
     <small>© <span id="year"></span> AdherenciaCheck • Készítette: Szabó Márk</small>
   </footer>
 
-  <script>window.SHEET_ID='1YUQJJodASSjYdeMnwNYNtukQDxTElfIWmxLXJZBmS54';</script>
-  <script src="app.js"></script>
+  <script>window.SHEET_ID="1YUQJJodASSjYdeMnwNYNtukQDxTElfIWmxLXJZBmS54";</script>
+  <script src="app.js" defer></script>
 </body>
 </html>
