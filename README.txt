@@ -1,19 +1,9 @@
-AdherenciaCheck v6 — a v5 továbbfejlesztése
-Tartalom:
-- v5 összes funkciója megőrizve (TAJ, 8 kérdés, 0–14 csúszka, heatmap-radar, személyre szabott tanácsok, CSV export)
-- Google Sheets mentés (csak befejezéskor) Netlify Functions-on át
-- Admin felület (/admin): statisztikák, összesített radar, táblázat, CSV export
-- HU/EN nyelvváltás, animációk, adaptív követőkérdések, gamifikáció
+AdherenciaCheck v6.2.0
+- Consent (beleegyezés) stabilizálva
+- Cache-busting minden statikus fájlra (?v=6.2.0)
+- v5/v6/v6.1 funkciók megtartva (TAJ, 8 kérdés, slider 0–14, heatmap radar, személyre szabott tanácsok, CSV export, Admin + Netlify Functions + Sheets)
 
-Telepítés (Netlify + Git):
-1) Hozz létre GitHub repót és töltsd fel a mappa tartalmát.
-2) Netlify → Add new site → Import from Git → válaszd a repót.
-3) Netlify → Site settings → Environment variables:
-   - SHEET_ID = 1YUQJJodASSjYdeMnwNYNtukQDxTElfIWmxLXJZBmS54
-   - GOOGLE_SERVICE_ACCOUNT = (Service Account JSON teljes tartalma egy sorban)
-   - ADMIN_TOKEN = (saját erős token az admin felülethez)
-4) Google Sheet megosztása: add meg szerkesztőként a Service Account e-mail címét.
-5) Deploy. A kliens oldali beküldés a /.netlify/functions/appendSheet végpontot hívja.
-6) Admin: nyisd meg /admin → add meg az ADMIN_TOKEN-t → Belépés.
-
-Megjegyzés: Ha nincs beállítva Sheets, a kliens továbbra is helyben gyűjt és CSV-be exportál.
+Netlify env:
+- SHEET_ID = 1YUQJJodASSjYdeMnwNYNtukQDxTElfIWmxLXJZBmS54
+- GOOGLE_SERVICE_ACCOUNT = service account JSON (egysorban)
+- ADMIN_TOKEN = admin jelszó
