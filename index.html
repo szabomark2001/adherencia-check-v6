@@ -6,22 +6,10 @@
   <title>AdherenciaCheck</title>
   <meta name="description" content="Gyógyszeres adherencia felmérése modern, letisztult felületen.">
   <link rel="icon" href="assets/favicon.png" />
-  <link rel="stylesheet" href="styles.css?v=6.2.0">
+  <link rel="stylesheet" href="styles.css?v=6.3.0">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 </head>
 <body>
-  <!-- Beleegyezés (egyszeri) -->
-  <div id="consentOverlay" class="overlay" aria-modal="true" role="dialog" aria-labelledby="consentTitle">
-    <div class="overlay__card card-ani">
-      <h1 id="consentTitle" data-i18n="consent.title">Beleegyezés</h1>
-      <p data-i18n="consent.text">Az oldal az Ön gyógyszeres adherenciáját méri <strong>tájékoztató jelleggel</strong>. A kitöltés önkéntes, és nem helyettesíti az orvosi vizsgálatot. Panasz esetén forduljon kezelőorvosához.</p>
-      <label class="consent-check">
-        <input type="checkbox" id="consentCheck" aria-describedby="consentTitle"> <span data-i18n="consent.accept">Elolvastam és elfogadom a feltételeket.</span>
-      </label>
-      <button id="consentBtn" class="btn" disabled aria-disabled="true" data-i18n="consent.btn">Elfogadom</button>
-    </div>
-  </div>
-
   <header class="site-header">
     <div class="brand">
       <span class="brand__logo">AC</span>
@@ -34,24 +22,25 @@
 
   <main class="container">
     <section class="intro card fade-in">
-      <h1 data-i18n="intro.title">Gyógyszeres adherencia felmérése</h1>
-      <p class="muted" data-i18n="intro.desc">Kérem, adja meg TAJ-számát, majd töltse ki a kérdőívet. Az eredmények csak a befejezéskor kerülnek mentésre az eszközén, és később Excelben exportálhatók.</p>
+      <h1>Gyógyszeres adherencia felmérése</h1>
+      <p class="muted">Kérem, adja meg TAJ-számát, majd töltse ki a kérdőívet. Az eredmények csak a befejezéskor kerülnek mentésre az eszközén, és később Excelben exportálhatók.</p>
     </section>
 
     <section id="formSection" class="card fade-in-up">
-      <h2 data-i18n="form.title">Kérdőív</h2>
+      <h2>Kérdőív</h2>
       <form id="surveyForm" novalidate>
         <div class="q">
-          <label for="taj" data-i18n="form.taj.label">Kérem, adja meg a TAJ számát (9 számjegy):</label>
+          <label for="taj">Kérem, adja meg a TAJ számát (9 számjegy):</label>
           <div class="with-icon">
             <span class="icon">🪪</span>
             <input id="taj" name="taj" inputmode="numeric" pattern="\d{9}" maxlength="9" placeholder="_________" required class="id-input" />
           </div>
-          <p class="muted" data-i18n="form.taj.note">Ne adjon meg más személyes adatot (név, e‑mail).</p>
+          <p class="muted">Ne adjon meg más személyes adatot (név, e‑mail).</p>
         </div>
 
-        <!-- 8 kérdés -->
-        <div class="q reveal"><label data-i18n="q1.l">1) Az elmúlt 2 hétben hányszor felejtette el bevenni a gyógyszerét?</label>
+        <!-- 8 kérdés (0–3; magasabb=jobb) -->
+        <div class="q reveal">
+          <label>1) Az elmúlt 2 hétben hányszor felejtette el bevenni a gyógyszerét?</label>
           <div class="opts">
             <label><input type="radio" name="q1" value="3" required> Soha</label>
             <label><input type="radio" name="q1" value="2"> 1–2 alkalom</label>
@@ -60,11 +49,17 @@
           </div>
           <div class="followup hidden" data-follow="q1">
             <label>Mi okozza leginkább az elfelejtést?</label>
-            <select id="f1"><option value="">Válasszon…</option><option value="napirend">Változó napirend</option><option value="emlekezteto">Nincs emlékeztető</option><option value="egyeb">Egyéb</option></select>
+            <select id="f1">
+              <option value="">Válasszon…</option>
+              <option value="napirend">Változó napirend</option>
+              <option value="emlekezteto">Nincs emlékeztető</option>
+              <option value="egyeb">Egyéb</option>
+            </select>
           </div>
         </div>
 
-        <div class="q reveal"><label>2) Milyen gyakran csúszik a bevétel ≥2 órát?</label>
+        <div class="q reveal">
+          <label>2) Milyen gyakran csúszik a bevétel ≥2 órát?</label>
           <div class="opts">
             <label><input type="radio" name="q2" value="3" required> Soha/ritkán</label>
             <label><input type="radio" name="q2" value="2"> Havonta néhányszor</label>
@@ -73,7 +68,8 @@
           </div>
         </div>
 
-        <div class="q reveal"><label>3) Előfordul, hogy szándékosan kihagyja?</label>
+        <div class="q reveal">
+          <label>3) Előfordul, hogy szándékosan kihagyja?</label>
           <div class="opts">
             <label><input type="radio" name="q3" value="3" required> Nem</label>
             <label><input type="radio" name="q3" value="2"> Ritkán</label>
@@ -82,11 +78,18 @@
           </div>
           <div class="followup hidden" data-follow="q3">
             <label>Miért hagyja ki leggyakrabban?</label>
-            <select id="f3"><option value="">Válasszon…</option><option value="mellekhatas">Mellékhatás</option><option value="ketely">Kétely</option><option value="koltseg">Költség</option><option value="egyeb">Egyéb</option></select>
+            <select id="f3">
+              <option value="">Válasszon…</option>
+              <option value="mellekhatas">Mellékhatás</option>
+              <option value="ketely">Kétely a hatásban</option>
+              <option value="koltseg">Költség</option>
+              <option value="egyeb">Egyéb</option>
+            </select>
           </div>
         </div>
 
-        <div class="q reveal"><label>4) Mennyire világos az adagolás, és mi a teendő kihagyás esetén?</label>
+        <div class="q reveal">
+          <label>4) Mennyire világos az adagolás, és mi a teendő kihagyás esetén?</label>
           <div class="opts">
             <label><input type="radio" name="q4" value="3" required> Teljesen világos</label>
             <label><input type="radio" name="q4" value="2"> Többnyire világos</label>
@@ -95,7 +98,8 @@
           </div>
         </div>
 
-        <div class="q reveal"><label>5) Van segítsége emlékeztetőkkel?</label>
+        <div class="q reveal">
+          <label>5) Van segítsége emlékeztetőkkel (app, doboz, hozzátartozó)?</label>
           <div class="opts">
             <label><input type="radio" name="q5" value="3" required> Igen, rendszeresen</label>
             <label><input type="radio" name="q5" value="2"> Igen, néha</label>
@@ -104,7 +108,8 @@
           </div>
         </div>
 
-        <div class="q reveal"><label>6) Meg tudja vásárolni a gyógyszereket?</label>
+        <div class="q reveal">
+          <label>6) Meg tudja vásárolni a gyógyszereket anyagilag?</label>
           <div class="opts">
             <label><input type="radio" name="q6" value="3" required> Igen</label>
             <label><input type="radio" name="q6" value="2"> Néha nehéz</label>
@@ -113,7 +118,8 @@
           </div>
         </div>
 
-        <div class="q reveal"><label>7) Zavaró mellékhatásai vannak?</label>
+        <div class="q reveal">
+          <label>7) Zavaró mellékhatásai vannak jelenleg?</label>
           <div class="opts">
             <label><input type="radio" name="q7" value="3" required> Nincsenek</label>
             <label><input type="radio" name="q7" value="2"> Enyhe</label>
@@ -122,7 +128,8 @@
           </div>
         </div>
 
-        <div class="q reveal"><label>8) Mennyire tartja fontosnak a rendszeres szedést?</label>
+        <div class="q reveal">
+          <label>8) Mennyire tartja fontosnak a gyógyszerek rendszeres szedését?</label>
           <div class="opts">
             <label><input type="radio" name="q8" value="3" required> Nagyon fontos</label>
             <label><input type="radio" name="q8" value="2"> Fontos</label>
@@ -174,10 +181,10 @@
   </main>
 
   <footer class="site-footer">
-    <small>© <span id="year"></span> AdherenciaCheck • Készítette: Szabó Márk • v6.2.0</small>
+    <small>© <span id="year"></span> AdherenciaCheck • Készítette: Szabó Márk • v6.3.0</small>
   </footer>
 
   <script>window.SHEET_ID="1YUQJJodASSjYdeMnwNYNtukQDxTElfIWmxLXJZBmS54";</script>
-  <script src="app.js?v=6.2.0" defer></script>
+  <script src="app.js?v=6.3.0" defer></script>
 </body>
 </html>

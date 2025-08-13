@@ -1,4 +1,4 @@
-// v6.2.0 – consent fix + cache-busting + v6.1/v5 feature parity
+// v6.3.0 – consent ELTÁVOLÍTVA; cache-busting; v5/v6 feature parity
 document.addEventListener('DOMContentLoaded', ()=>{
   // ===== Theme =====
   const themeToggle=document.getElementById('themeToggle');
@@ -9,28 +9,6 @@ document.addEventListener('DOMContentLoaded', ()=>{
       localStorage.setItem('theme',document.body.classList.contains('light')?'light':'dark');
     });
   }
-
-  // ===== Consent (hardened) =====
-  const overlay=document.getElementById('consentOverlay');
-  const cb=document.getElementById('consentCheck');
-  const btn=document.getElementById('consentBtn');
-
-  if(overlay && localStorage.getItem('adherencia_consent')==='yes') overlay.style.display='none';
-
-  const sync=()=>{
-    if(!btn||!cb) return;
-    const enabled = cb.checked===true;
-    btn.disabled=!enabled;
-    btn.setAttribute('aria-disabled', String(!enabled));
-  };
-  if(cb) cb.addEventListener('change', sync);
-  sync();
-
-  if(btn) btn.addEventListener('click', ()=>{
-    if(!cb || !cb.checked) return;
-    localStorage.setItem('adherencia_consent','yes');
-    if(overlay) overlay.style.display='none';
-  });
 
   // ===== Form refs =====
   const form=document.getElementById('surveyForm');
@@ -79,27 +57,30 @@ document.addEventListener('DOMContentLoaded', ()=>{
     const cat = score>=20?{t:'Jó adherencia',c:'ok'}:score>=14?{t:'Javítható',c:'warn'}:{t:'Nem kielégítő',c:'bad'};
     catEl.innerHTML=`<span class="badge ${cat.c}">${cat.t}</span>`; result.classList.remove('hidden');
 
+    // Radar chart (heatmap-like gradient) + short labels at corners
     const labels=['Elfelejtés','Késés ≥2h','Szándékos kihagyás','Terv világos','Emlékeztetők','Anyagi hozzáférés','Zavaró mellékhatás','Fontosság'];
     const ctx=document.getElementById('radarChart').getContext('2d');
     if(radarChart) radarChart.destroy();
     radarChart=new Chart(ctx,{type:'radar',data:{labels,datasets:[{data:vals,fill:true,
       backgroundColor:(c)=>{const ca=c.chart.chartArea;if(!ca) return 'rgba(37,99,235,0.30)'; const g=c.chart.ctx.createLinearGradient(ca.left,ca.top,ca.right,ca.bottom); g.addColorStop(0,'rgba(37,99,235,0.40)'); g.addColorStop(0.35,'rgba(16,185,129,0.35)'); g.addColorStop(0.6,'rgba(245,158,11,0.30)'); g.addColorStop(0.85,'rgba(249,115,22,0.28)'); g.addColorStop(1,'rgba(239,68,68,0.25)'); return g; },
       borderColor:(c)=>{const ca=c.chart.chartArea;if(!ca) return '#2563eb'; const g=c.chart.ctx.createLinearGradient(ca.left,ca.top,ca.right,ca.bottom); g.addColorStop(0,'#2563eb'); g.addColorStop(0.35,'#10b981'); g.addColorStop(0.6,'#f59e0b'); g.addColorStop(0.85,'#f97316'); g.addColorStop(1,'#ef4444'); return g; },
-      borderWidth:2, pointRadius:3, pointBackgroundColor:'#fff', pointBorderColor:'#2563eb'}]}, options:{responsive:true,maintainAspectRatio:false,animation:{duration:700,easing:'easeOutQuart'},plugins:{legend:{display:false}},scales:{r:{min:0,max:3,ticks:{display:false,stepSize:1},grid:{color:'rgba(255,255,255,0.08)'},angleLines:{color:'rgba(255,255,255,0.12)'},pointLabels:{color:'rgba(255,255,255,0.85)',font:{size:12,weight:'600'}}}},elements:{line:{tension:0.25}} });
+      borderWidth:2, pointRadius:3, pointBackgroundColor:'#fff', pointBorderColor:'#2563eb'}]}},
+      options:{responsive:true,maintainAspectRatio:false,animation:{duration:700,easing:'easeOutQuart'},plugins:{legend:{display:false}},
+        scales:{r:{min:0,max:3,ticks:{display:false,stepSize:1},grid:{color:'rgba(255,255,255,0.08)'},angleLines:{color:'rgba(255,255,255,0.12)'},pointLabels:{color:'rgba(255,255,255,0.85)',font:{size:12,weight:'600'}}}},elements:{line:{tension:0.25}} });
 
-    // Advice
+    // Advice (polite/magázó)
     const tips=[]; const s=vals.reduce((a,b)=>a+b,0);
     const block=(title,t,arr)=>`<div class="card-mini"><h3 class="badge ${t}">${title}</h3><ul>${arr.map(x=>`<li>${x}</li>`).join('')}</ul></div>`;
     if(s>=20) tips.push(block('Összességében jó adherencia','ok',['Tartsa meg a bevált emlékeztetőit.','Mellékhatás esetén jelezzen.']));
-    if(vals[0]<=1) tips.push(block('Gyakori felejtés','bad',['Kösse rutinhoz (pl. reggeli után).','Emlékeztető app + gyógyszeres doboz.']));
-    if(vals[1]<=1) tips.push(block('Időzítés bizonytalan','warn',['Fix időpont + „mi a teendő, ha csúszik?” tisztázása.']));
-    if(vals[2]<=1) tips.push(block('Szándékos kihagyás','warn',['Okok összegyűjtése, megbeszélés orvossal.']));
-    if(vals[3]<=1) tips.push(block('Terv nem elég világos','warn',['Írásos adagolási tervet kérjen.']));
-    if(vals[4]<=1) tips.push(block('Nincs stabil emlékeztető','warn',['Ismétlődő riasztás beállítása.']));
-    if(vals[5]<=1) tips.push(block('Anyagi akadály','warn',['Támogatás/generikum lehetőségeinek áttekintése.']));
-    if(vals[6]<=1) tips.push(block('Mellékhatások kezelése','warn',['Ne hagyja abba hirtelen; egyeztessen.']));
+    if(vals[0]<=1) tips.push(block('Gyakori felejtés','bad',['Kösse rutinhoz (pl. reggeli után).','Állítson be emlékeztetőt / használjon gyógyszeres dobozt.']));
+    if(vals[1]<=1) tips.push(block('Időzítés bizonytalan','warn',['Válasszon fix időpontot.','Tisztázza: mi a teendő, ha csúszik?']));
+    if(vals[2]<=1) tips.push(block('Szándékos kihagyás','warn',['Gyűjtse össze az okokat, és beszélje meg orvosával.']));
+    if(vals[3]<=1) tips.push(block('Terv nem elég világos','warn',['Kérjen írásos adagolási tervet és „kihagyás-kezelési” útmutatót.']));
+    if(vals[4]<=1) tips.push(block('Nincs stabil emlékeztető','warn',['Állítson be ismétlődő riasztást.']));
+    if(vals[5]<=1) tips.push(block('Anyagi akadály','warn',['Érdeklődjön támogatásról / generikumról.']));
+    if(vals[6]<=1) tips.push(block('Mellékhatások kezelése','warn',['Ne hagyja abba hirtelen; egyeztessen orvosával.']));
     if(vals[7]<=1) tips.push(block('Motiváció erősítése','warn',['Kösse a szedést személyes célhoz.']));
-    if(miss>=4) tips.push(block('Gyakori kihagyások','bad',['Fő + tartalék emlékeztető beállítása.']));
+    if(miss>=4) tips.push(block('Gyakori kihagyások','bad',['Állítson be fő + tartalék emlékeztetőt.']));
     advice.innerHTML = tips.join('') || block('Nincs kiemelt kockázat','ok',['Az eredmények alapján nem látható jelentős akadály.']);
 
     // Gamify
